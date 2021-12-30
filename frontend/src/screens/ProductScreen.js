@@ -4,7 +4,6 @@ import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import products from '../products'
 import { Match } from 'react-router-dom';
-import HomeScreen from '../screens/HomeScreens'
 
 const ProductScreen = () => {
     const params = useParams();
@@ -24,7 +23,34 @@ const ProductScreen = () => {
                     <ListGroup.Item>
                         <Rating value={product.rating} text={`${product.numReviews} Reviews`} />
                     </ListGroup.Item>
+                    <ListGroup.Item>
+                        Price: ${product.price}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        Description: {product.description}
+                    </ListGroup.Item>
                 </ListGroup>
+            </Col>
+            <Col md={3}>
+                <Card>
+                    <ListGroup variant="flush">
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Price: </Col>
+                                <Col><strong>${product.price}</strong></Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Status: </Col>
+                                <Col>{product.countInStock > 0 ? <span className="text-success">In Stock</span> : <span className="text-secondary">Out of Stock</span>}</Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Row><Button className="btn-block" type="button" disabled={product.countInStock === 0 ? true: false}>Add to Cart</Button></Row>
+                        </ListGroup.Item>
+                    </ListGroup>
+                </Card>
             </Col>
         </Row>
         </>
