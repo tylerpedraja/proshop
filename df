@@ -1,0 +1,108 @@
+warning: LF will be replaced by CRLF in frontend/package-lock.json.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in frontend/package.json.
+The file will have its original line endings in your working directory
+[1mdiff --git a/backend/server.js b/backend/server.js[m
+[1mindex 62f2354..e700e41 100644[m
+[1m--- a/backend/server.js[m
+[1m+++ b/backend/server.js[m
+[36m@@ -16,5 +16,6 @@[m [mapp.get(`/api/products/:id`, (req, res) => {[m
+     })[m
+     res.json(product);[m
+ })[m
+[32m+[m
+ app.listen(5000, console.log('Server running on port 5000'));[m
+ [m
+[1mdiff --git a/frontend/package-lock.json b/frontend/package-lock.json[m
+[1mindex 16cf312..9544407 100644[m
+[1m--- a/frontend/package-lock.json[m
+[1m+++ b/frontend/package-lock.json[m
+[36m@@ -3031,6 +3031,14 @@[m
+       "resolved": "https://registry.npmjs.org/axe-core/-/axe-core-4.3.5.tgz",[m
+       "integrity": "sha512-WKTW1+xAzhMS5dJsxWkliixlO/PqC4VhmO9T4juNYcaTg9jzWiJsou6m5pxWYGfigWbwzJWeFY6z47a+4neRXA=="[m
+     },[m
+[32m+[m[32m    "axios": {[m
+[32m+[m[32m      "version": "0.24.0",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz",[m
+[32m+[m[32m      "integrity": "sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==",[m
+[32m+[m[32m      "requires": {[m
+[32m+[m[32m        "follow-redirects": "^1.14.4"[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+     "axobject-query": {[m
+       "version": "2.2.0",[m
+       "resolved": "https://registry.npmjs.org/axobject-query/-/axobject-query-2.2.0.tgz",[m
+[1mdiff --git a/frontend/package.json b/frontend/package.json[m
+[1mindex 06f5c65..49c7fda 100644[m
+[1m--- a/frontend/package.json[m
+[1m+++ b/frontend/package.json[m
+[36m@@ -1,11 +1,13 @@[m
+ {[m
+   "name": "frontend",[m
+[32m+[m[32m  "proxy": "http://127.0.0.1:5000",[m
+   "version": "0.1.0",[m
+   "private": true,[m
+   "dependencies": {[m
+     "@testing-library/jest-dom": "^5.16.1",[m
+     "@testing-library/react": "^12.1.2",[m
+     "@testing-library/user-event": "^13.5.0",[m
+[32m+[m[32m    "axios": "^0.24.0",[m
+     "react": "^17.0.2",[m
+     "react-bootstrap": "^2.0.4",[m
+     "react-dom": "^17.0.2",[m
+[1mdiff --git a/frontend/src/screens/HomeScreens.js b/frontend/src/screens/HomeScreens.js[m
+[1mindex 3efa5ce..cb53f33 100644[m
+[1m--- a/frontend/src/screens/HomeScreens.js[m
+[1m+++ b/frontend/src/screens/HomeScreens.js[m
+[36m@@ -1,9 +1,19 @@[m
+[31m-import React from 'react'[m
+[32m+[m[32mimport React, { useState, useEffect } from 'react'[m
+ import { Row, Col } from 'react-bootstrap';[m
+ import Product from '../components/Product';[m
+[31m-import products from '../products';[m
+[32m+[m[32mimport axios from 'axios';[m
+ [m
+ const HomeScreens = () => {[m
+[32m+[m[32m    const [products, setProducts] = useState([]);[m
+[32m+[m
+[32m+[m[32m    useEffect(() => {[m
+[32m+[m[32m        const fetchProducts = async () => {[m
+[32m+[m[32m            const { data } = await axios.get('./api/products');[m
+[32m+[m[32m            setProducts(data);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        fetchProducts();[m
+[32m+[m[32m    }, [])[m
+[32m+[m
+     return ([m
+         <>[m
+          <h1>Latest Products</h1>[m
+[1mdiff --git a/frontend/src/screens/ProductScreen.js b/frontend/src/screens/ProductScreen.js[m
+[1mindex f82ddab..80d9361 100644[m
+[1m--- a/frontend/src/screens/ProductScreen.js[m
+[1m+++ b/frontend/src/screens/ProductScreen.js[m
+[36m@@ -1,13 +1,22 @@[m
+[31m-import React from 'react'[m
+[32m+[m[32mimport React, { useState, useEffect} from 'react'[m
+ import { Link, useParams } from 'react-router-dom'[m
+ import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'[m
+ import Rating from '../components/Rating'[m
+[31m-import products from '../products'[m
+[32m+[m[32mimport axios from 'axios';[m
+ import { Match } from 'react-router-dom';[m
+ [m
+ const ProductScreen = () => {[m
+     const params = useParams();[m
+[31m-    const product = products.find((p) => p._id === params.id)[m
+[32m+[m[32m    const [product, setProduct] = useState({});[m
+[32m+[m[41m    [m
+[32m+[m[32m    useEffect(() => {[m
+[32m+[m[32m        const fetchProduct = async () => {[m
+[32m+[m[32m            const { data } = await axios.get(`./api/products/${params}`);[m
+[32m+[m[32m            setProduct(data);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        fetchProduct();[m
+[32m+[m[32m    }, [])[m
+[32m+[m
+     return ([m
+         <>[m
+         <Link to='/' className='btn btn-light my-3'>Go Back</Link>[m
