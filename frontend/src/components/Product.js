@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import CardHeader from 'react-bootstrap/esm/CardHeader';
 import Rating from './Rating';
 import { Link } from 'react-router-dom';
+import { Loader } from '../components/Loader'
 
 const Product = ({product}) => {
     return (
