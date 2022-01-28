@@ -4,6 +4,7 @@ import connectDB from './config/db.js';
 import color from 'colors';
 import path from 'path';
 import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import { notFound, errorHandler} from './middleware/errorMiddleware.js'
 
 dotenv.config();
@@ -11,6 +12,8 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+app.use(express.json());
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
@@ -28,6 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 
