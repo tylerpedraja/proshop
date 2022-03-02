@@ -15,3 +15,5 @@ This is the product of a MERN Course, by Brad Traversy, which demonstrates my un
 - Checkout process (shipping, payment method, etc)
 - PayPal / credit card integration
 - Database seeder (products & users)
+
+end
